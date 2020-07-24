@@ -1,0 +1,36 @@
+version: '3'
+services:
+  activemq:
+    image: webcenter/activemq
+    restart: always
+    container_name: activemq
+    ports:
+      - 61613:61613
+      - 61616:61616
+      - 8161:8161
+    volumes:
+      - ./volumes/log/activemq:/var/log/activemqq
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_CONFIG_MINMEMORY=512
+      - ACTIVEMQ_CONFIG_MAXMEMORY=1024
+    networks:
+      - news-tracker-network
+  newsjob:
+    image: k8s-news-tracker-job:1.0.0
+    restart: on-failure
+    container_name: newsjob
+    ports:
+      - 8088:8080
+    environment:
+      - NEWSAPI-AUTHORIZATION=db87162d00af4d1bb4c8031ad1cf22f5
+      - ACTIVEMQ-HOST=activemq
+      - ACTIVEMQ-PORT=61613
+    links:
+      - activemq
+    networks:
+      - news-tracker-network
+networks:
+  news-tracker-network:
+    driver: "bridge"
