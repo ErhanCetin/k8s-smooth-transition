@@ -17,20 +17,16 @@ services:
       - ACTIVEMQ_CONFIG_MAXMEMORY=1024
     networks:
       - news-tracker-network
-  newsjob:
+  newsproducer:
     image: k8s-news-tracker-job:1.0.0
     restart: on-failure
-    container_name: newsjob
-    ports:
-      - 8088:8080
+    container_name: newsproducer
     environment:
       - NEWSAPI-AUTHORIZATION=db87162d00af4d1bb4c8031ad1cf22f5
       - ACTIVEMQ-HOST=activemq
       - ACTIVEMQ-PORT=61613
-    links:
-      - activemq
-    networks:
-      - news-tracker-network
+      - ACTIVEMQ-QUEUE-NAME=news-queue
+      - ACTIVEMQ_USER_LOGIN=admint
+      - ACTIVEMQ_USER_PASSWORD=admin
 networks:
-  news-tracker-network:
-    driver: "bridge"
+- news-tracker-network

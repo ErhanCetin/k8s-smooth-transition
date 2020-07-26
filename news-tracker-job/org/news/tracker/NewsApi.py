@@ -36,8 +36,10 @@ sleep(5)
 ## put news data to activemq
 activemqHostName = os.environ.get('ACTIVEMQ-HOST')
 activemqPort = os.environ.get('ACTIVEMQ-PORT')
-
+activemqQueueName = os.environ.get('ACTIVEMQ-QUEUE-NAME')
+activemqUser= os.environ.get('ACTIVEMQ_USER_LOGIN')
+activemqPassword= os.environ.get('ACTIVEMQ_USER_PASSWORD')
 conn = stomp.Connection([(activemqHostName, activemqPort)])
-conn.connect('admin', 'admin', wait=False)
-conn.send(body=response_json_string, destination='/queue/news-que')
+conn.connect(activemqUser, activemqPassword, wait=False)
+conn.send(body=response_json_string, destination='/queue/' + activemqQueueName)
 conn.disconnect()
