@@ -1,10 +1,10 @@
 ## News Tracker APPLICATION 
-- This simple project is created to use in k8s article. 
+- This project is created to use in k8s article. 
 
  Components 
 ---
 #### News Tracker Producer 
-     - It is written by Python to fetch the tech news from newsapi and write them down to Activemq queue.
+   - It is implemented with Python to fetch the tech news from newsapi and write them down to Activemq queue.
  
 ###### Build image
  > docker build -t k8s-news-tracker-job:1.0.0 .
@@ -20,18 +20,23 @@
 > - in local : http://localhost:8162/admin
 
 #### News Consumer Service
-     - It is written by golang to fetch the news from activemq and write them down to mongo db.
+   - It is written by golang to fetch the news from activemq and write them down to mongo db.
 
 #### Mongodb Service
-     - It is used by new consumer to put news in it.
+   - It is used by new consumer to put news in it.
 
-#### mongo-express 
+#### Mongo-Express 
    - It is used to check mongo db table via user interface. 
    - for local : http://localhost:8089/
-   
+
+#### NewsApi Service 
+   - It is implemented by Spring Boot and SpringData MongoTemplate and is used to serve the news data to 3rd application and  
+   - for local : http://localhost:8085/news/getAll
+      
 ### Steps between services
  * Fetch news from newsapi and write them to activemq ( by news tracker producer service)  
- * Consume news from active mq and put them into mongo db
+ * Consume news from active mq and put them into mongo db ( by consumer service)
+ * Fetch news data from Mongo Db and expose them to 3rd applications ( by  newsapi service)
  
  
  
