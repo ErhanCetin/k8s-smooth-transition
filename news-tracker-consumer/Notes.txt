@@ -1,0 +1,35 @@
+https://hub.docker.com/_/mongo
+
+ docker run -d --name mongodb -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=123456 -e MONGO_INITDB_DATABASE=news mongo
+
+
+mongodb express to manage it via GUI :
+   -- https://github.com/mongo-express/mongo-express
+      --- docker run -it --rm -p 8888:8081 --link YOUR_MONGODB_CONTAINER:mongo mongo-express
+   -- > docker run -it --rm -p 8088:8081 --link mongodb:news-db mongo-express
+
+
+ docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_DATABASE=news mongo
+
+ working :
+ > docker run -it --rm -p 8088:8081 --link mongodb:mongo mongo-express
+
+
+-------
+HEADL CHECK For docker compose
+  -- v3 :
+      --- https://docs.docker.com/compose/compose-file/
+      --- https://docs.docker.com/engine/reference/builder/#healthcheck
+
+  -- legacy : https://docs.docker.com/compose/startup-order/
+  -- good sample : https://github.com/peter-evans/docker-compose-healthcheck
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - "db"
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
