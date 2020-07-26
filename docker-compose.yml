@@ -1,0 +1,69 @@
+version: '3'
+services:
+  activemq:
+    image: webcenter/activemq
+    restart: always
+    container_name: activemq
+    ports:
+      - 61613:61613
+      - 61616:61616
+      - 8161:8161
+    volumes:
+      - ./volumes/log/activemq:/var/log/activemqq
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_CONFIG_MINMEMORY=512
+      - ACTIVEMQ_CONFIG_MAXMEMORY=1024
+    networks:
+      - news-tracker-network
+  newsproducer:
+    image: k8s-news-tracker-job:1.0.0
+    restart: on-failure
+    container_name: newsproducer
+    environment:
+      - NEWSAPI-AUTHORIZATION=db87162d00af4d1bb4c8031ad1cf22f5
+      - ACTIVEMQ-HOST=activemq
+      - ACTIVEMQ-PORT=61613
+      - ACTIVEMQ-QUEUE-NAME=news-queue
+      - ACTIVEMQ_USER_LOGIN=admint
+      - ACTIVEMQ_USER_PASSWORD=admin
+    networks:
+      - news-tracker-network
+  mongodb:
+    image: mongo
+    restart: on-failure
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=news-db
+    networks:
+      - news-tracker-network
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    ports:
+      - 8089:8081
+    networks:
+      - news-tracker-network
+  newsconsumer:
+    image: k8s-news-tracker-consumer:1.0.0
+    restart: on-failure
+    container_name: newsconsumer
+    environment:
+      - ACTIVEMQ-HOST=activemq
+      - ACTIVEMQ-PORT=61613
+      - ACTIVEMQ-QUEUE-NAME=news-queue
+      - MONGODB-HOST=mongodb
+      - MONGODB-NAME=news-db
+      - MONGODB-COLLECTION=article
+    networks:
+      - news-tracker-network
+networks:
+  news-tracker-network:
+    driver: "bridge"
