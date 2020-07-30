@@ -8,12 +8,13 @@ public class Article {
 
 
     @Id
+    private String id;
     private String author;
     private String title;
     private String description;
     private String url;
-    private String urlToImage;
-    private String publishedAt;
+    private String urltoimage;
+    private String publishedat;
     private String content;
     private Source source;
 
@@ -24,7 +25,7 @@ public class Article {
                    String title,
                    String description,
                    String url,
-                   String urlToImage,
+                   String urltoimage,
                    String publishedAt,
                    String content,
                    Source source) {
@@ -32,8 +33,8 @@ public class Article {
         this.title = title;
         this.description = description;
         this.url = url;
-        this.urlToImage = urlToImage;
-        this.publishedAt = publishedAt;
+        this.urltoimage = urltoimage;
+        this.publishedat = publishedat;
         this.content = content;
         this.source = source;
     }
@@ -70,20 +71,20 @@ public class Article {
         this.url = url;
     }
 
-    public String getUrlToImage() {
-        return urlToImage;
+    public String getUrltoimage() {
+        return urltoimage;
     }
 
-    public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
+    public void setUrltoimage(String urltoimage) {
+        this.urltoimage = urltoimage;
     }
 
-    public String getPublishedAt() {
-        return publishedAt;
+    public String getPublishedat() {
+        return publishedat;
     }
 
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
+    public void setPublishedat(String publishedat) {
+        this.publishedat = publishedat;
     }
 
     public String getContent() {
@@ -100,6 +101,14 @@ public class Article {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
 
