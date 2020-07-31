@@ -17,7 +17,7 @@ news_url_for_everthing = 'https://newsapi.org/v2/everything'
 payload_for_everything = {'q': 'technology', 'language': 'en', 'sortBy': 'publishedAt', 'from': fromDate, 'to': toDate}
 
 # check if null then use sample authorization
-authorization = os.environ.get('NEWSAPI-AUTHORIZATION')
+authorization = os.environ.get('NEWSAPI_AUTHORIZATION')
 if authorization is None:
     authorization = 'db87162d00af4d1bb4c8031ad1cf22f5'
 
@@ -34,12 +34,13 @@ print(response_dict)
 sleep(5)
 
 ## put news data to activemq
-activemqHostName = os.environ.get('ACTIVEMQ-HOST')
-activemqPort = os.environ.get('ACTIVEMQ-PORT')
-activemqQueueName = os.environ.get('ACTIVEMQ-QUEUE-NAME')
-activemqUser= os.environ.get('ACTIVEMQ_USER_LOGIN')
-activemqPassword= os.environ.get('ACTIVEMQ_USER_PASSWORD')
+activemqHostName = os.environ.get('ACTIVEMQ_HOST')
+activemqPort = os.environ.get('ACTIVEMQ_PORT')
+activemqQueueName = os.environ.get('ACTIVEMQ_QUEUE_NAME')
+activemqUser = os.environ.get('ACTIVEMQ_USER_LOGIN')
+activemqPassword = os.environ.get('ACTIVEMQ_USER_PASSWORD')
+activemqDestination = "/queue/" + activemqQueueName
 conn = stomp.Connection([(activemqHostName, activemqPort)])
 conn.connect(activemqUser, activemqPassword, wait=False)
-conn.send(body=response_json_string, destination='/queue/' + activemqQueueName)
+conn.send(body=response_json_string, destination=activemqDestination)
 conn.disconnect()
