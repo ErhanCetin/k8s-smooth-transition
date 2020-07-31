@@ -1,6 +1,5 @@
 version: '3'
 services:
-services:
   activemq:
     image: webcenter/activemq
     restart: always
@@ -77,18 +76,6 @@ services:
     depends_on :
       - activemq
       - mongodb
-    networks:
-      - news-tracker-network
-  newsapi:
-    image: k8s-news-tracker-api:1.0.0
-    restart: on-failure
-    container_name: newsapi
-    ports:
-      - 8085:8080
-    environment:
-      - MONGODB-HOST=mongodb
-      - MONGODB-NAME=news-db
-      - MONGODB-PORT=27017
     networks:
       - news-tracker-network
 networks:

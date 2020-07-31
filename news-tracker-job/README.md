@@ -10,7 +10,7 @@ Components
  > docker build -t k8s-news-tracker-job:1.0.0 .
  
 ###### Run standalone container in local :
-> docker run --name="news-python" -e NEWSAPI-AUTHORIZATION='<your-authorization-key-(OPTIONAL)>' -e ACTIVEMQ-HOST=activemq -e ACTIVEMQ-PORT=61613  k8s-news-tracker-job:1.0.0
+> docker run --name="news-python" -e NEWSAPI_AUTHORIZATION='<your-authorization-key-(OPTIONAL)>' -e ACTIVEMQ_HOST=activemq -e ACTIVEMQ_PORT=61613  k8s-news-tracker-job:1.0.0
 
 #### ActiveMQ Service
 - This service is used by news tracker producer and news consumer services. 
