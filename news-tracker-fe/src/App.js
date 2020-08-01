@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import ArticleList from "./components/ArticleList";
+import Config from './Config';
 
 class App extends Component {
 
@@ -11,7 +12,9 @@ class App extends Component {
 
     componentDidMount() {
 
-        var newsApiUrl = 'http://localhost:8080/news/getAll';
+        var newsApiUrl = 'http://'+Config.newsapiHostName+':'+Config.newsApiHostPort+'/news/getAll';
+        console.log('xxxxxxx');
+        console.log(Config.newsapiHostName + ' ::: '+ Config.newsApiHostPort);
         axios
             .get(newsApiUrl
             ).then(response => {
