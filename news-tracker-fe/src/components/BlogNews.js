@@ -10,9 +10,8 @@ const BlogNews = (props) => {
        <MDBRow>
           <MDBCol lg="5" xl="4">
             <MDBView hover className="rounded z-depth-1-half mb-lg-0 mb-4">
-              
               <img
-                class="rounded float-left"
+                className="rounded float-left"
                 src={props.item.urlToImage}
                 alt=""
                 size="200px"
