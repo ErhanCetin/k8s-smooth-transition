@@ -1,0 +1,57 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: activemq-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: activemq-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: activemq-pod
+  labels:
+    app: be-activemq
+    part-of : backend
+spec:
+  volumes:
+    - name: activemq-pv-storage
+      persistentVolumeClaim:
+        claimName: activemq-claim
+  containers:
+    - name: activemq
+      image: erhancetin/activemq
+      imagePullPolicy: Always
+      env:
+        - name: ACTIVEMQ_ADMIN_LOGIN
+          value: "admin"
+        - name: ACTIVEMQ_ADMIN_PASSWORD
+          value: "admin"
+        - name: ACTIVEMQ_CONFIG_MINMEMORY
+          value: "512"
+        - name: ACTIVEMQ_CONFIG_MAXMEMORY
+          value: "1024"
+      ports:
+        - containerPort: 8161
+        - containerPort: 61616
+        - containerPort: 61613
+      volumeMounts:
+        - name: activemq-pv-storage
+          mountPath: /mnt/volumes/log/activemq

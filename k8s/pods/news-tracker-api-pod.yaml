@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newsapi-pod
+  labels:
+    app: be-api
+    part-of : backend
+spec:
+  containers:
+    - name: newsapi
+      image: erhancetin/k8s-news-tracker-api
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8080
+      env:
+        - name: MONGODB-HOST
+          value: "mongodb"
+        - name: MONGODB-NAME
+          value: "news-db"
+        - name: MONGODB-PORT
+          value: "27017"
