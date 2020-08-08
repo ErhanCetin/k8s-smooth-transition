@@ -20,7 +20,7 @@
 > - in local : http://localhost:8162/admin
 
 #### News Consumer Service
-   - It is written by golang to fetch the news from activemq and write them down to mongo db.
+   - It is written with golang to fetch the news from activemq and write them down to mongo db.
 
 #### Mongodb Service
    - It is used by new consumer to put news in it.
@@ -30,13 +30,18 @@
    - for local : http://localhost:8089/
 
 #### NewsApi Service 
-   - It is implemented by Spring Boot and SpringData MongoTemplate and is used to serve the news data to 3rd application and  
+   - It is implemented with Spring Boot and SpringData MongoTemplate and is used to serve the news data to 3rd application and  
    - for local : http://localhost:8085/news/getAll
-      
+
+#### Frontend Service 
+   - It is implemented with React  
+   - for local : http://localhost:3001
+         
 ### Steps between services
  * Fetch news from newsapi and write them to activemq ( by news tracker producer service)  
- * Consume news from active mq and put them into mongo db ( by consumer service)
- * Fetch news data from Mongo Db and expose them to 3rd applications ( by  newsapi service)
+ * Consumes news from active mq and put them into mongo db ( by consumer service)
+ * Fetch news data from Mongo Db and expose them by newsapi service for 3rd applications
+ * Frontend service will show the news in formatted web page.   
  
  
  

@@ -23,3 +23,14 @@ Components
 - The newsJob service needs to activemq service to write news . You can look at docker-compose.yml configuration to up the service. 
 - To run all service in compose yml file
    > docker-compose up -d   
+                                           >
+## to push docker image to docker hub 
+> docker build -t k8s-news-tracker-job .
+> docker images
+> docker tag bb38976d03cf erhancetin/k8s-news-tracker-job:latest
+> docker push erhancetin/k8s-news-tracker-job:latest
+
+## to push activemq image to your repository in order to use in local minikube.
+> docker images | grep "activemq"
+> docker tag 3af156432993 erhancetin/activemq
+> docker push  erhancetin/activemq 

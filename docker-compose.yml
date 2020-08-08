@@ -2,7 +2,7 @@ version: '3'
 services:
 services:
   activemq:
-    image: webcenter/activemq
+    image: erhancetin/activemq
     restart: always
     container_name: activemq
     ports:
@@ -19,7 +19,7 @@ services:
     networks:
       - news-tracker-network
   newsproducer:
-    image: k8s-news-tracker-job:1.0.0
+    image: erhancetin/k8s-news-tracker-job
     restart: on-failure
     container_name: newsproducer
     environment:
@@ -60,7 +60,7 @@ services:
     networks:
       - news-tracker-network
   newsconsumer:
-    image: k8s-news-tracker-consumer:1.0.0
+    image: erhancetin/k8s-news-tracker-consumer
     restart: on-failure
     container_name: newsconsumer
     environment:
@@ -80,7 +80,7 @@ services:
     networks:
       - news-tracker-network
   newsapi:
-    image: k8s-news-tracker-api:1.0.0
+    image: erhancetin/k8s-news-tracker-api
     restart: on-failure
     container_name: newsapi
     ports:
