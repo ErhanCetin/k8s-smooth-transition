@@ -1,13 +1,30 @@
-## News Tracker APPLICATION 
-- This project is created to use in k8s article. 
+## News Tracker Application 
+- This project is created to be used in k8s article to give details to reader. All part of Kubernetes resource in this project are going to be used in the articles.
+Please check the componenets section to get insight about project.  
 
- Components 
+Requirements for running Kubernetes locally
+--
+* Prerequisites: 
+   * docker   : https://docs.docker.com/get-docker/
+   * kubectl  : https://kubernetes.io/docs/tasks/tools/install-kubectl/
+   * minikube : https://kubernetes.io/docs/tasks/tools/install-minikube/ 
+
+* Run commands in command line to verify installation : 
+   >  docker --version                
+      docker-compose --version        
+      docker-machine --version        
+      minikube version                
+      kubectl version  
+* Start minikube
+   > minikube start                                                           
+
+ Components / Applications
 ---
 #### News Tracker Producer 
    - It is implemented with Python to fetch the tech news from newsapi and write them down to Activemq queue.
  
 ###### Build image
- > docker build -t k8s-news-tracker-job:1.0.0 .
+ > docker build -t erhancetin/k8s-news-tracker-job
  
 ###### Run standalone container in local :
 > docker run --name="news-python" -e NEWSAPI-AUTHORIZATION='<your-authorization-key-(OPTIONAL)>' -e ACTIVEMQ-HOST=activemq -e ACTIVEMQ-PORT=61613  k8s-news-tracker-job:1.0.0
@@ -15,7 +32,7 @@
 #### ActiveMQ Service
 - This service is used by news tracker producer and news consumer services. 
 
-###### Test standalone activemq.
+###### To test standalone activemq.
 > docker run --name='activemq' -d   -p  61617:61616 -p 61613:61613 -p 8162:8161 -e 'ACTIVEMQ_CONFIG_MINMEMORY=512' -e 'ACTIVEMQ_CONFIG_MAXMEMORY=1024'\ -P webcenter/activemq:latest
 > - in local : http://localhost:8162/admin
 
