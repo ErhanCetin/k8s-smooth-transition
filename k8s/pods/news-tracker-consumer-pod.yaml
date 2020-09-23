@@ -4,7 +4,8 @@ metadata:
   name: newsconsumer-pod
   labels:
     app: be-consumer
-    part-of : backend
+    part-of: backend
+    env: prod
 spec:
   containers:
     - name: newsconsumer

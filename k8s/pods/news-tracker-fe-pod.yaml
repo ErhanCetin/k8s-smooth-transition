@@ -29,7 +29,8 @@ metadata:
   name: newstrackerfe-pod
   labels:
     app: fe-react
-    part-of : frontend
+    part-of: frontend
+    env: prod
 spec:
   volumes:
     - name: fee-pv-storage

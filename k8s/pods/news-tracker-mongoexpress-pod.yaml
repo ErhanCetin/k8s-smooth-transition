@@ -4,7 +4,8 @@ metadata:
   name: newsmongdbexpress-pod
   labels:
     app: fe-mongodb-express
-    part-of : frontend
+    part-of: frontend
+    env: prod
 spec:
   containers:
     - name: newsmongodbexpress
