@@ -4,7 +4,8 @@ metadata:
   name: newsproducer-pod
   labels:
     app: be-producer
-    part-of : backend
+    part-of: backend
+    env: prod
 spec:
   containers:
     - name: newsproducer

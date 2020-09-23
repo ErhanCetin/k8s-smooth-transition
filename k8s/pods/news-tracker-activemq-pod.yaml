@@ -27,9 +27,11 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: activemq-pod
+  namespace : develop
   labels:
     app: be-activemq
-    part-of : backend
+    part-of: backend
+    env: prod
 spec:
   volumes:
     - name: activemq-pv-storage

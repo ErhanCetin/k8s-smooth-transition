@@ -4,7 +4,8 @@ metadata:
   name: newsmongdb-pod
   labels:
     app: be-mongodb
-    part-of : backend
+    part-of: backend
+    env: prod
 spec:
   containers:
     - name: newsmongodb

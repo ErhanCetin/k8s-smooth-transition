@@ -4,7 +4,8 @@ metadata:
   name: newsapi-pod
   labels:
     app: be-api
-    part-of : backend
+    part-of: backend
+    env: prod
 spec:
   containers:
     - name: newsapi
