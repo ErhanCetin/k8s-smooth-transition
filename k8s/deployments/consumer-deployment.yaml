@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsconsumer-deployment
+spec:
+  replicas: 2
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 2 # how many pods we can add at a time.
+        maxUnavailable: 0 # define how many pods can be unavailable during the rolling update.  
+  selector:
+    matchLabels:
+      app: newsconsumer
+  template:
+    metadata:
+      name: newsconsumer
+      labels:
+        app: newsconsumer
+        part-of: backendx
+        env: develop
+    spec:
+      containers:
+        - name: newsconsumer
+          image: erhancetin/k8s-news-tracker-consumer
+          resources:
+            limits:
+              memory: "300Mi"
+              cpu: "1"
+            requests:
+                memory: "200Mi"
+                cpu: "0.5"
+          imagePullPolicy: Always
+          env:
+            - name: ACTIVEMQ_HOST
+              value: "activemq"
+            - name: ACTIVEMQ_PORT
+              value: "61613"
+            - name: ACTIVEMQ_QUEUE_NAME
+              value: "news-queue"
+            - name: MONGODB-HOST
+              value: "mongodb"
+            - name: MONGODB-NAME
+              value: "news-db"
+            - name: MONGODB-COLLECTION
+              value: "article"
+            - name: WAIT_HOSTS
+              value: "mongodb:27017,activemq:8161"
+            - name: WAIT_HOSTS_TIMEOUT
+              value: "300"
+            - name: WAIT_SLEEP_INTERVAL
+              value: "5"
+            - name: WAIT_HOST_CONNECT_TIMEOUT
+              value: "5"            
