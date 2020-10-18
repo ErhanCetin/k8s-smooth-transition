@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsapi-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: newsapi
+  template:
+    metadata:
+      name: newsapi
+      labels:
+        app: newsapi
+        part-of: backend
+        env: develop
+    spec:
+      containers:
+        - name: newsapi
+          image: erhancetin/k8s-news-tracker-api
+          resources:
+            limits:
+              memory: "300Mi"
+              cpu: "1"
+            requests:
+                memory: "200Mi"
+                cpu: "0.5"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGODB-HOST
+              value: "mongodb"
+            - name: MONGODB-NAME
+              value: "news-db"
+            - name: MONGODB-PORT
+              value: "27017"
