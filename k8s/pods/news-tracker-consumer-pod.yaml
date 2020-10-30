@@ -19,18 +19,16 @@ spec:
         - name: ACTIVEMQ_QUEUE_NAME
           value: "news-queue"
         - name: MONGODB-HOST
-          value: "mongodb"
+          value: "mongodb-service:27017"
         - name: MONGODB-NAME
           value: "news-db"
         - name: MONGODB-COLLECTION
           value: "article"
         - name: WAIT_HOSTS
-          value: "mongodb:27017,activemq:8161"
+          value: "mongodb-service:27017,activemq-service:8161"
         - name: WAIT_HOSTS_TIMEOUT
           value: "300"
         - name: WAIT_SLEEP_INTERVAL
           value: "5"
         - name: WAIT_HOST_CONNECT_TIMEOUT
           value: "5"
-
-

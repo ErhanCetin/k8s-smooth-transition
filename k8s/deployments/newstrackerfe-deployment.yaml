@@ -1,0 +1,71 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: fee-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: fee-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newstrackerfe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: newstrackerfe
+  template:
+    metadata:
+      name: newstrackerfe
+      labels:
+        app: newstrackerfe
+        part-of: frontend
+        env: develop
+    spec:
+      volumes:
+        - name: fee-pv-storage
+          persistentVolumeClaim:
+            claimName: fee-claim
+      containers:
+        - name: newstrackerfe
+          image: erhancetin/k8s-news-tracker-fe
+          resources:
+              limits:
+                memory: "500Mi"
+                cpu: "1"
+              requests:
+                  memory: "200Mi"
+                  cpu: "0.5"
+          imagePullPolicy: Always
+          env:
+            - name: CHOKIDAR_USEPOLLING
+              value: "true"
+            - name: NEWS_API_HOST_NAME
+              value: "newsapi-service"
+            - name: NEWS_API_HOST_PORT
+              value: "8080"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: fee-pv-storage
+              mountPath: /mnt/fe
+
+

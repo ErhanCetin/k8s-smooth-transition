@@ -10,7 +10,8 @@ COPY start.sh /news-tracker-consumer
 RUN chmod +x /news-tracker-consumer/start.sh
 
 RUN apk update -qq && apk add git
-RUN go get github.com/go-stomp/stomp
+#RUN go get github.com/go-stomp/stomp
+RUN go get github.com/russmack/stompingophers
 RUN go get gopkg.in/mgo.v2
 RUN go build -o main .
 
