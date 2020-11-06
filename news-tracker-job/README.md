@@ -37,3 +37,9 @@ Components
 
 ## to exec 
 > kubectl exec -it <newsproducer-pod-name>  /bin/sh
+
+## clean up finished jobs automatically
+ -- https://kubernetes.io/docs/concepts/workloads/controllers/job/#clean-up-finished-jobs-automatically
+    Warning : But this is not working with cronjob.
+ -- or manual : 
+    >> kubectl delete job $(kubectl get job -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}')

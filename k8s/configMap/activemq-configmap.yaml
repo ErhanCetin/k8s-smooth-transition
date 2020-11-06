@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: activemq-configmap
-data:
-  ACTIVEMQ_ADMIN_LOGIN: "admin"
-  ACTIVEMQ_CONFIG_MINMEMORY: "512"
-  ACTIVEMQ_CONFIG_MAXMEMORY: "1024"

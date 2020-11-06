@@ -5,6 +5,7 @@ TODO.txt
 .idea
 Notes.txt
 node_modules
+volumes
 
 .vscode/*
 !.vscode/settings.json

@@ -1,6 +1,5 @@
 version: '3'
 services:
-services:
   activemq:
     image: erhancetin/activemq
     restart: always

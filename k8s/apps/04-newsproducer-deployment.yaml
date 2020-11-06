@@ -1,0 +1,78 @@
+# echo -n 'admin' | base64   >>> YWRtaW4=
+# to encode : kubectl get secret activemq-admin-password -o jsonpath='{.data.password}' | base64 --decode -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: activemq-admin-password 
+type: Opaque
+data:
+   ACTIVEMQ_ADMIN_PASSWORD: YWRtaW4=
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newsproducer-configmap
+data:
+  ACTIVEMQ_ADMIN_LOGIN: "admin"
+  NEWSAPI_AUTHORIZATION: "f51e635007554c24b19968114740a907"
+  ACTIVEMQ_HOST: "activemq-service"
+  ACTIVEMQ_PORT: "61613"
+  ACTIVEMQ_QUEUE_NAME: "news-queue"
+  ACTIVEMQ_USER_LOGIN: "admin"
+  ACTIVEMQ_ADMIN_PORT: "8161"
+  WAIT_HOSTS: "activemq-service:8161"
+  WAIT_HOSTS_TIMEOUT: "300"
+  WAIT_SLEEP_INTERVAL: "5"
+  WAIT_HOST_CONNECT_TIMEOUT: "5"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsproducer-service
+  labels:
+    part-of: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9999
+      targetPort: 9999
+  selector:
+    app: newsproducer
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: newsproducer-cronjob
+spec:
+  schedule: "0/1 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 10
+      template:
+        metadata:
+          name: newsproducer
+          labels:
+            app: newsproducer
+            part-of: backend
+            env: develop
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: newsproducer
+            image: erhancetin/k8s-news-tracker-job
+            resources:
+              limits:
+                memory: "300Mi"
+                cpu: "1"
+              requests:
+                memory: "200Mi"
+                cpu: "0.5"
+            imagePullPolicy: Always
+            envFrom:
+              - configMapRef:
+                  name: newsproducer-configmap  
+              - secretRef:
+                  name: activemq-admin-password
