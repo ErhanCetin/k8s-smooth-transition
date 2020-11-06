@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: activemq-service
+  labels:
+    part-of: backend
+spec:
+  type: ClusterIP
+  ports:
+    - name : activemq-ui
+      port: 8161
+      targetPort: 8161
+    - name : activemq-in
+      port: 61613
+      targetPort: 61613  
+  selector:
+    app: be-activemq

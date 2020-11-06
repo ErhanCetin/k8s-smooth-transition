@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newsproducer-configmap
+data:
+  ACTIVEMQ_ADMIN_LOGIN: "admin"
+  NEWSAPI_AUTHORIZATION: "f51e635007554c24b19968114740a907"
+  ACTIVEMQ_HOST: "activemq-service"
+  ACTIVEMQ_PORT: "61613"
+  ACTIVEMQ_QUEUE_NAME: "news-queue"
+  ACTIVEMQ_USER_LOGIN: "admin"
+  ACTIVEMQ_ADMIN_PORT: "8161"
+  WAIT_HOSTS: "activemq-service:8161"
+  WAIT_HOSTS_TIMEOUT: "300"
+  WAIT_SLEEP_INTERVAL: "5"
+  WAIT_HOST_CONNECT_TIMEOUT: "5"

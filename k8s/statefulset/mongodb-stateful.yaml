@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-stateful
+spec:
+  serviceName: "mongodb-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: newsmongodb
+  template:
+    metadata:
+      labels:
+        app: newsmongodb
+    spec:
+      containers:
+        - name: newsmongodb
+          image: mongo
+          resources:
+            limits:
+              memory: "800Mi"
+              cpu: "1"
+            requests:
+              memory: "500Mi"
+              cpu: "0.5"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: mongodb-configmap
+
+

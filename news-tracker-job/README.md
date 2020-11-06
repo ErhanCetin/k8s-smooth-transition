@@ -34,3 +34,6 @@ Components
 > docker images | grep "activemq"
 > docker tag 3af156432993 erhancetin/activemq
 > docker push  erhancetin/activemq 
+
+## to exec 
+> kubectl exec -it <newsproducer-pod-name>  /bin/sh

@@ -48,15 +48,11 @@ spec:
         - name: activemq
           image: erhancetin/activemq
           imagePullPolicy: Always
-          env:
-            - name: ACTIVEMQ_ADMIN_LOGIN
-              value: "admin"
-            - name: ACTIVEMQ_ADMIN_PASSWORD
-              value: "admin"
-            - name: ACTIVEMQ_CONFIG_MINMEMORY
-              value: "512"
-            - name: ACTIVEMQ_CONFIG_MAXMEMORY
-              value: "1024"
+          envFrom:
+            - configMapRef:
+                name: activemq-configmap
+            - secretRef:
+                name: activemq-admin-password    
           ports:
             - containerPort: 8161
             - containerPort: 61616

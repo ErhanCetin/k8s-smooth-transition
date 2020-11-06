@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsmongdbexpress-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: newsmongdbexpress
+  template:
+    metadata:
+      name: newsmongdbexpress
+      labels:
+        app: newsmongdbexpress
+        part-of: backend
+        env: develop
+    spec:
+      containers:
+        - name: newsmongodbexpress
+          image: mongo-express
+          resources:
+            limits:
+              memory: "300Mi"
+              cpu: "1"
+            requests:
+              memory: "200Mi"
+              cpu: "0.5"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: mongodbexpress-configmap

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsconsumer-deployment
+spec:
+  replicas: 1
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 2 # how many pods we can add at a time.
+        maxUnavailable: 0 # define how many pods can be unavailable during the rolling update.  
+  selector:
+    matchLabels:
+      app: newsconsumer
+  template:
+    metadata:
+      name: newsconsumer
+      labels:
+        app: newsconsumer
+        part-of: backend
+        env: develop
+    spec:
+      containers:
+        - name: newsconsumer
+          image: erhancetin/k8s-news-tracker-consumer
+          resources:
+            limits:
+              memory: "300Mi"
+              cpu: "1"
+            requests:
+                memory: "200Mi"
+                cpu: "0.5"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: newsconsumer-configmap          

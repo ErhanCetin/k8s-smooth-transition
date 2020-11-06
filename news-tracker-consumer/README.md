@@ -8,7 +8,11 @@
    - It is used to check mongo db table via user interface. 
    - for local : http://localhost:8089/
 ## to push docker image to docker hub 
-   > docker build -t k8s-news-tracker-consumer .
-   > docker images
-   > docker tag 56c1dbad99a2 erhancetin/k8s-news-tracker-consumer:latest
-   > docker push erhancetin/k8s-news-tracker-consumer:latest
+   - > docker build -t k8s-news-tracker-consumer .
+   - > docker images
+   - > docker tag 56c1dbad99a2 erhancetin/k8s-news-tracker-consumer:latest
+   - > docker push erhancetin/k8s-news-tracker-consumer:latest
+
+
+## to exec
+- > kubectl exec -it newsconsumer-pod-name  /bin/sh   
