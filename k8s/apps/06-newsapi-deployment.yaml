@@ -1,3 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newsapi-configmap
+data:
+  MONGODB-HOST: "mongodb-service"
+  MONGODB-NAME: "news-db"
+  MONGODB-PORT: "27017"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsapi-service
+  labels:
+    part-of: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: newsapi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

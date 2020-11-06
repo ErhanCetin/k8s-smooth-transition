@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: newsapi-configmap
-data:
-  MONGODB-HOST: "mongodb-service"
-  MONGODB-NAME: "news-db"
-  MONGODB-PORT: "27017"
-
