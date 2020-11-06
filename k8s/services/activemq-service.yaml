@@ -5,7 +5,7 @@ metadata:
   labels:
     part-of: backend
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - name : activemq-ui
       port: 8161

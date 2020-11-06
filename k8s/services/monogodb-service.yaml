@@ -5,9 +5,9 @@ metadata:
   labels:
     part-of: backend
 spec:
-  type: NodePort
+  clusterIP: None
   ports:
     - port: 27017
       targetPort: 27017
   selector:
-    app: newsmongdb
+    app: newsmongodb

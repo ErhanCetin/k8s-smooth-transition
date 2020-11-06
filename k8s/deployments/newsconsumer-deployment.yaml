@@ -31,24 +31,6 @@ spec:
                 memory: "200Mi"
                 cpu: "0.5"
           imagePullPolicy: Always
-          env:
-            - name: ACTIVEMQ-HOST
-              value: "activemq-service"
-            - name: ACTIVEMQ-PORT
-              value: "61613"
-            - name: ACTIVEMQ-QUEUE-NAME
-              value: "news-queue"
-            - name: MONGODB-HOST
-              value: "mongodb-service"
-            - name: MONGODB-NAME
-              value: "news-db"
-            - name: MONGODB-COLLECTION
-              value: "article"
-            - name: WAIT_HOSTS
-              value: "mongodb-service:27017,activemq-service:8161"
-            - name: WAIT_HOSTS_TIMEOUT
-              value: "300"
-            - name: WAIT_SLEEP_INTERVAL
-              value: "5"
-            - name: WAIT_HOST_CONNECT_TIMEOUT
-              value: "5"            
+          envFrom:
+            - configMapRef:
+                name: newsconsumer-configmap          

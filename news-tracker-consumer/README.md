@@ -12,3 +12,7 @@
    - > docker images
    - > docker tag 56c1dbad99a2 erhancetin/k8s-news-tracker-consumer:latest
    - > docker push erhancetin/k8s-news-tracker-consumer:latest
+
+
+## to exec
+- > kubectl exec -it newsconsumer-pod-name  /bin/sh   

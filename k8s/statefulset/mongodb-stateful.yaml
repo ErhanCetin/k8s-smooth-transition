@@ -1,19 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: newsmongdb-deployment
+  name: mongodb-stateful
 spec:
+  serviceName: "mongodb-service"
   replicas: 1
   selector:
     matchLabels:
-      app: newsmongdb
+      app: newsmongodb
   template:
     metadata:
-      name: newsmongdb
       labels:
-        app: newsmongdb
-        part-of: backend
-        env: develop
+        app: newsmongodb
     spec:
       containers:
         - name: newsmongodb
@@ -28,7 +26,8 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 27017
-          env:
-            - name: MONGO_INITDB_DATABASE
-              value: "news-db"
+          envFrom:
+            - configMapRef:
+                name: mongodb-configmap
+
 

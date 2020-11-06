@@ -28,10 +28,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          env:
-            - name: MONGODB-HOST
-              value: "mongodb-service"
-            - name: MONGODB-NAME
-              value: "news-db"
-            - name: MONGODB-PORT
-              value: "27017"
+          envFrom:
+            - configMapRef:
+                name: newsapi-configmap

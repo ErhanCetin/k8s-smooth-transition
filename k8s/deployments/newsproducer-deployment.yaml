@@ -26,28 +26,8 @@ spec:
             memory: "200Mi"
             cpu: "0.5"
         imagePullPolicy: Always
-        env:
-          - name: ACTIVEMQ_ADMIN_LOGIN
-            value: "admin"
-          - name: NEWSAPI_AUTHORIZATION
-            value: "f51e635007554c24b19968114740a907"
-          - name: ACTIVEMQ_HOST
-            value: "activemq-service"
-          - name: ACTIVEMQ_PORT
-            value: "61613"
-          - name: ACTIVEMQ_QUEUE_NAME
-            value: "news-queue"
-          - name: ACTIVEMQ_USER_LOGIN
-            value: "admin"
-          - name: ACTIVEMQ_USER_PASSWORD
-            value: "admin"
-          - name: ACTIVEMQ_ADMIN_PORT
-            value: "8161"
-          - name: WAIT_HOSTS
-            value:  "activemq-service:8161"
-          - name: WAIT_HOSTS_TIMEOUT
-            value: "300"
-          - name: WAIT_SLEEP_INTERVAL
-            value: "5"
-          - name: WAIT_HOST_CONNECT_TIMEOUT
-            value: "5"
+        envFrom:
+            - configMapRef:
+                name: newsproducer-configmap  
+            - secretRef:
+                name: activemq-admin-password     
