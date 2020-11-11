@@ -5,31 +5,38 @@ Please check the componenets section to get insight about project.If you’re us
 
 ## Service Architecture
 ---
-- << TODO >> put diagram here.
+ ![application-architecture](https://user-images.githubusercontent.com/10308201/98815665-cd341880-2427-11eb-8800-f5054711997c.png)
 
 
 ## Components / Applications
 ---
 ##### 1. NewsTrackerProducer Service
-   - It is implemented with Python to fetch the tech news from [newsapi] and write them down to activemq queue.
+
+- It is implemented with Python to fetch the tech news from [newsapi] and write them down to activemq queue.
 
 ##### 2. ActiveMQ Service
-  - This service is used to persist the data which coming from [newsapi] in the queue. --> used by NewsTrackerProducer and NewsTrackerConsumer Services.
+
+- This service is used to persist the data which coming from [newsapi] in the queue. --> used by NewsTrackerProducer and NewsTrackerConsumer Services.
 
 ##### 3. NewsTrackerConsumer Service
-   - It is implemented with golang to fetch the news from Activemq service and write them down to mongo db.
+
+- It is implemented with golang to fetch the news from Activemq service and write them down to mongo db.
    
 ##### 4. Mongodb Service
-   - It is used to persist **news** . --> used by Mongo-Express Service, NewsTrackerConsumer and NewsTrackerProducer Services.
+
+- It is used to persist **news** . --> used by Mongo-Express Service, NewsTrackerConsumer and NewsTrackerProducer Services.
 
 ##### 5. Mongo-Express Service
-   - It is used to check mongo db via user interface. 
+
+- It is used to check mongo db via user interface. 
    
 ##### 6. NewsTrackerApi Service 
-   - It is implemented with Spring Boot and SpringData MongoTemplate . The service serves the **news** data. --> used by NewsTrackerFE Service  
+
+- It is implemented with Spring Boot and SpringData MongoTemplate . The service serves the **news** data. --> used by NewsTrackerFE Service  
    
 ##### 7. NewsTrackerFE Service 
-   - It is implemented with [next.js]. This service presents all news list which is coming from NewsTrackerApi service to the end user.
+
+- It is implemented with [next.js]. This service presents all news list which is coming from NewsTrackerApi service to the end user.
  
 ### Steps between the services
  1. Fetching news from [newsapi] and write them to activemq. --> by NewsTrackerProducer Service  
@@ -110,7 +117,7 @@ Please check the componenets section to get insight about project.If you’re us
         |newsfe-deployment              |1/1     |1            |1           |41m
         |newsmongdbexpress-deployment   |1/1     |1            |1           |41m
     
-    - **Service Resources**    << TODO remove newsproducer and consumer services, also from yaml file. >>
+    - **Service Resources**
         ```
             $ kubectl get svc
         ```
@@ -121,9 +128,7 @@ Please check the componenets section to get insight about project.If you’re us
         |mongodb-service          |ClusterIP   |None             |<none>        |27017/TCP            |25m
         |mongodbexpress-service   |ClusterIP   |10.103.19.72     |<none>        |8081/TCP             |25m
         |newsapi-service          |ClusterIP   |10.111.245.72    |<none>        |8080/TCP             |25m
-        |newsconsumer-service     |ClusterIP   |10.102.200.79    |<none>        |9998/TCP             |25m
         |newsfe-service           |NodePort    |10.100.4.7       |<none>        |3000:30144/TCP       |25m
-        |newsproducer-service     |ClusterIP   |10.108.10.117    |<none>        |9999/TCP             |25m
 
     - **ConfigMap Resources**
         ```
@@ -185,10 +190,14 @@ Please check the componenets section to get insight about project.If you’re us
         |fee-claim        |Bound    |pvc-f9be7acb-883d-4518-950b-b505eaf8c080   |100M       |RWO            |standard       |44m
 
 
-➜ **Finally everthing is ready to vist our website to read the tech news :** 
- << TODO : put screenshot of FE webpage >> 
-
-
+##### ➜ **Finally everthing is ready to vist our website to read the tech news :** 
+- Command below will open a browser for the tech news. Enjoy it.  
+       ```
+        $ minikube service newsfe-service
+      ```
+---
+### License : MIT
+---
 [//]:# (Reference Links)
 [newsapi]: <https://newsapi.org>
 [next.js]: <https://nextjs.org>
