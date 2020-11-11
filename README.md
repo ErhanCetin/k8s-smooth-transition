@@ -1,7 +1,7 @@
 # News Tracker Application 
 ---
-- This project is created to be used in k8s article to give details to reader. All part of Kubernetes resource in this project are going to be used in the articles.
-Please check the componenets section to get insight about project.If you’re using this sample application, please ★Star this repository to show your interest!
+- This project's been created to be used in k8s article to give details to readers. Basicly there are a couple of services which are aim to fetch tech news from [newsapi] to show in webapp.Please check the componenets section to get insight about project.All part of Kubernetes resources in this project are going to be used in the medium articles( I will provide the medium article links in here when they are ready) .
+- If you’re using this sample application, please ★Star this repository to show your interest!
 
 ## Service Architecture
 ---
@@ -202,7 +202,3 @@ Please check the componenets section to get insight about project.If you’re us
 [newsapi]: <https://newsapi.org>
 [next.js]: <https://nextjs.org>
 [all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps>
-
-
-
- 
