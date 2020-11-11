@@ -1,64 +1,199 @@
-## News Tracker Application 
-- This project is created to be used in k8s article to give details to reader. All part of Kubernetes resource in this project are going to be used in the articles.
-Please check the componenets section to get insight about project.  
-
-Requirements for running Kubernetes locally
---
-* Prerequisites: 
-   * docker   : https://docs.docker.com/get-docker/
-   * kubectl  : https://kubernetes.io/docs/tasks/tools/install-kubectl/
-   * minikube : https://kubernetes.io/docs/tasks/tools/install-minikube/ 
-
-* Run commands in command line to verify installation : 
-   >  docker --version                
-      docker-compose --version        
-      docker-machine --version        
-      minikube version                
-      kubectl version  
-* Start minikube
-   > minikube start                                                           
-
- Components / Applications
+# News Tracker Application 
 ---
-#### News Tracker Producer 
-   - It is implemented with Python to fetch the tech news from newsapi and write them down to Activemq queue.
+- This project is created to be used in k8s article to give details to reader. All part of Kubernetes resource in this project are going to be used in the articles.
+Please check the componenets section to get insight about project.If you’re using this sample application, please ★Star this repository to show your interest!
+
+## Service Architecture
+---
+- << TODO >> put diagram here.
+
+
+## Components / Applications
+---
+##### 1. NewsTrackerProducer Service
+   - It is implemented with Python to fetch the tech news from [newsapi] and write them down to activemq queue.
+
+##### 2. ActiveMQ Service
+  - This service is used to persist the data which coming from [newsapi] in the queue. --> used by NewsTrackerProducer and NewsTrackerConsumer Services.
+
+##### 3. NewsTrackerConsumer Service
+   - It is implemented with golang to fetch the news from Activemq service and write them down to mongo db.
+   
+##### 4. Mongodb Service
+   - It is used to persist **news** . --> used by Mongo-Express Service, NewsTrackerConsumer and NewsTrackerProducer Services.
+
+##### 5. Mongo-Express Service
+   - It is used to check mongo db via user interface. 
+   
+##### 6. NewsTrackerApi Service 
+   - It is implemented with Spring Boot and SpringData MongoTemplate . The service serves the **news** data. --> used by NewsTrackerFE Service  
+   
+##### 7. NewsTrackerFE Service 
+   - It is implemented with [next.js]. This service presents all news list which is coming from NewsTrackerApi service to the end user.
  
-###### Build image
- > docker build -t erhancetin/k8s-news-tracker-job
- 
-###### Run standalone container in local :
-> docker run --name="news-python" -e NEWSAPI-AUTHORIZATION='<your-authorization-key-(OPTIONAL)>' -e ACTIVEMQ-HOST=activemq -e ACTIVEMQ-PORT=61613  k8s-news-tracker-job:1.0.0
-
-#### ActiveMQ Service
-- This service is used by news tracker producer and news consumer services. 
-
-###### To test standalone activemq.
-> docker run --name='activemq' -d   -p  61617:61616 -p 61613:61613 -p 8162:8161 -e 'ACTIVEMQ_CONFIG_MINMEMORY=512' -e 'ACTIVEMQ_CONFIG_MAXMEMORY=1024'\ -P webcenter/activemq:latest
-> - in local : http://localhost:8162/admin
-
-#### News Consumer Service
-   - It is written with golang to fetch the news from activemq and write them down to mongo db.
-
-#### Mongodb Service
-   - It is used by new consumer to put news in it.
-
-#### Mongo-Express 
-   - It is used to check mongo db table via user interface. 
-   - for local : http://localhost:8089/
-
-#### NewsApi Service 
-   - It is implemented with Spring Boot and SpringData MongoTemplate and is used to serve the news data to 3rd application and  
-   - for local : http://localhost:8085/news/getAll
-
-#### Frontend Service 
-   - It is implemented with React  
-   - for local : http://localhost:3001
-         
-### Steps between services
- * Fetch news from newsapi and write them to activemq ( by news tracker producer service)  
- * Consumes news from active mq and put them into mongo db ( by consumer service)
- * Fetch news data from Mongo Db and expose them by newsapi service for 3rd applications
- * Frontend service will show the news in formatted web page.   
+### Steps between the services
+ 1. Fetching news from [newsapi] and write them to activemq. --> by NewsTrackerProducer Service  
+ 2. Consuming news from the activemq and put them into the mongo db. --> by NewsTrackerConsumer Service
+ 3. Fetching news data from the Mongo Db and expose them for the FE. --> by NewsTrackerApi Service
+ 4. Fetching the news from the NewsTrackerApi to show them to the end user in formatted web page. --> by NewsTrackerFE Service   
  
  
+### Installation for running Kubernetes locally
+---
+* **Prerequisites:** 
+   * git : https://git-scm.com/downloads
+   * docker: https://docs.docker.com/get-docker/
+   * kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl/
+   * minikube: https://kubernetes.io/docs/tasks/tools/install-minikube/ 
+   * Don't forget 
+     * Check the version compatibility of docker,kubectl and minikube
+     * Increase **resources** of docker in your local.
+     
+
+* **Execute commands to verify installation :** 
+    ```sh
+      $ docker --version
+      $ docker-compose --version        
+      $ docker-machine --version        
+      $ minikube version                
+      $ kubectl version 
+    ```  
+                 
+ 
+* **Start minikube**
+    ```sh
+      $ minikube start 
+      $ minikube status 
+    ```  
+
+* **Install all services to Kubernetes instance on minikube:**
+    - Clone the project to your local :
+        ```sh
+        $ git clone https://github.com/ErhanCetin/k8s-smooth-transition.git
+        ``` 
+    - Check the minikube :
+         ```sh
+          $ minikube status 
+        ``` 
+    - Open a terminal and go to k8s-smooth-transition/k8s/apps, you will see [all-news-tracker-services]   
+    - Execute kubectl command to run all services up .
+        ```sh
+        $ kubectl apply -f .
+        ```
+**---- >  Installation is done.**
+### What should you have after running all-services up in Kubernetes ?
+---
+- After installation steps , you should see resouces below in your local .
+    - **Pods Resources**
+         ```
+            $ kubectl get pods # ignore generated number in pods names. 
+        ```
+        | NAME                                         | READY | STATUS | RESTARTS | AGE | 
+        | -------------------------------------------- | ----- | ------ | -------- | --- |
+        | activemq-deployment-5b8ff65958-mhdtr           |1/1   |Running|     1|    16m
+        | mongodb-stateful-0                             | 1/1  |Running|     1|    16m
+        | newsapi-deployment-b678b9b7f-f8v8q             | 1/1  |Running|     0|    16m
+        | newsconsumer-deployment-7fb89b858b-lrttz       | 1/1  |Running|     0|    16m
+        | newsfe-deployment-77756f7bd4-wnxfc             | 1/1  |Running|     0|    16m
+        | newsmongdbexpress-deployment-589d48b946-fwv92  | 1/1  |Running|     0|    24s
+        | newsproducer-cronjob-1605045660-sg227          | 0/1  |Completed|   0|    66s
+       
+    - **Deployment Resources**    
+         ```
+            $ kubectl get deployment 
+        ```
+        |NAME                           |READY   |UP-TO-DATE   |AVAILABLE   |AGE
+        |--|--|--|--|--
+        |activemq-deployment            |1/1     |1            |1           |41m
+        |newsapi-deployment             |1/1     |1            |1           |41m
+        |newsconsumer-deployment        |1/1     |1            |1           |41m
+        |newsfe-deployment              |1/1     |1            |1           |41m
+        |newsmongdbexpress-deployment   |1/1     |1            |1           |41m
+    
+    - **Service Resources**    << TODO remove newsproducer and consumer services, also from yaml file. >>
+        ```
+            $ kubectl get svc
+        ```
+        |NAME                     |TYPE        |CLUSTER-IP       |EXTERNAL-IP   |PORT(S)              |AGE
+        | ------------------------|------------------- | ----- | ------ | -------- | --- |
+        |activemq-service         |ClusterIP   |10.101.216.209   |<none>        |8161/TCP,61613/TCP   |25m
+        |kubernetes               |ClusterIP   |10.96.0.1        |<none>        |443/TCP              |28m
+        |mongodb-service          |ClusterIP   |None             |<none>        |27017/TCP            |25m
+        |mongodbexpress-service   |ClusterIP   |10.103.19.72     |<none>        |8081/TCP             |25m
+        |newsapi-service          |ClusterIP   |10.111.245.72    |<none>        |8080/TCP             |25m
+        |newsconsumer-service     |ClusterIP   |10.102.200.79    |<none>        |9998/TCP             |25m
+        |newsfe-service           |NodePort    |10.100.4.7       |<none>        |3000:30144/TCP       |25m
+        |newsproducer-service     |ClusterIP   |10.108.10.117    |<none>        |9999/TCP             |25m
+
+    - **ConfigMap Resources**
+        ```
+            $ kubectl get svc
+        ```
+        |NAME                       |DATA   |AGE
+        | --- | ---|---|
+        |activemq-configmap         |3      |30m
+        |mongodb-configmap          |1      |30m
+        |mongodbexpress-configmap   |2      |30m
+        |newsapi-configmap          |3      |30m
+        |newsconsumer-configmap     |10     |30m
+        |newsfe-configmap           |3      |30m
+        |newsproducer-configmap     |11     |30m
+    
+    - **Secret Resources**
+        ```
+            $ kubectl get secret
+        ```
+        |NAME                             |TYPE                                  |DATA   |AGE
+        |--|---|--|--|
+        |activemq-admin-password          |Opaque                                |1      |34m
+        |newsproducer-activemq-password   |Opaque                                |1      |34m 
+    - **Cronjob Resource**
+        ```
+            $ kubectl get cronjob
+        ```
+        |NAME                   |SCHEDULE      |SUSPEND   |ACTIVE   |LAST SCHEDULE   |AGE
+        |--|--|--|--|--|--|
+        |newsproducer-cronjob   |0/1 * * * *   |False     |1        |14s             |38m
+    
+    - **StatefulSet Resource** 
+        ```
+            $ kubectl get statefulset
+        ```
+        |NAME               |READY   |AGE
+        |--|--|--|
+        |mongodb-stateful   |1/1     |40m
+
+    - **Persistentvolume Resource** 
+        ```
+            $ kubectl get persistentvolume
+        ```
+        
+        |NAME                                       |CAPACITY   |ACCESS MODES   |RECLAIM POLICY   |STATUS      |CLAIM                    |STORAGECLASS   |REASON   |AGE
+        |--|--|--|--|--|--|--|--|--|
+        |activemq-pv                                |100M       |RWO            |Retain           |Available                                                    |43m
+        |fee-pv                                     |100M       |RWO            |Retain           |Available                                                    |43m
+        |pvc-e897f978-c911-4d6c-816b-dc608caf6bbb   |100M       |RWO            |Delete           |Bound       |default/activemq-claim   |standard              |  43m
+        |pvc-f9be7acb-883d-4518-950b-b505eaf8c080   |100M       |RWO            |Delete           |Bound       |default/fee-claim        |standard              |  43m
+
+    - **PersistentVolumeClaim Resource** 
+        ```
+            $ kubectl get persistentvolume
+        ```
+        |NAME             |STATUS   |VOLUME                                     |CAPACITY   |ACCESS MODES   |STORAGECLASS   |AGE
+        |--|--|--|--|--|--|--
+        |activemq-claim   |Bound    |pvc-e897f978-c911-4d6c-816b-dc608caf6bbb   |100M       |RWO            |standard       |44m
+        |fee-claim        |Bound    |pvc-f9be7acb-883d-4518-950b-b505eaf8c080   |100M       |RWO            |standard       |44m
+
+
+➜ **Finally everthing is ready to vist our website to read the tech news :** 
+ << TODO : put screenshot of FE webpage >> 
+
+
+[//]:# (Reference Links)
+[newsapi]: <https://newsapi.org>
+[next.js]: <https://nextjs.org>
+[all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps>
+
+
+
  
