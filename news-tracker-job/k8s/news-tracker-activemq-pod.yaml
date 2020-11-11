@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newsproducerpod
+  labels:
+    app: be-job
+spec:
+  containers:
+    - image: rinormaloku/sentiment-analysis-frontend
+      name: newsproducer
+      ports:
+        - 61613:61613
+        - 61616:61616
+        - 8161:8161

@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newsfe-configmap
+data:
+  CHOKIDAR_USEPOLLING: "true"
+  NEWS_API_HOST_NAME: "newsapi-service"
+  NEWS_API_HOST_PORT: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsfe-service
+  labels:
+    part-of: frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30144
+  selector:
+    app: newsfe
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: fee-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: fee-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsfe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: newsfe
+  template:
+    metadata:
+      name: newsfe
+      labels:
+        app: newsfe
+        part-of: frontend
+        env: develop
+    spec:
+      volumes:
+        - name: fee-pv-storage
+          persistentVolumeClaim:
+            claimName: fee-claim
+      containers:
+        - name: newsfe
+          image: erhancetin/k8s-news-tracker-fe
+          resources:
+              limits:
+                memory: "500Mi"
+                cpu: "1"
+              requests:
+                  memory: "200Mi"
+                  cpu: "0.5"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: newsfe-configmap  
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: fee-pv-storage
+              mountPath: /mnt/fe
+
+

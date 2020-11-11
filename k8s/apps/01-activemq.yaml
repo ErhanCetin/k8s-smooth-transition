@@ -1,0 +1,100 @@
+---
+# echo -n 'admin' | base64   >>> YWRtaW4=
+# to encode : kubectl get secret activemq-admin-password -o jsonpath='{.data.password}' | base64 --decode -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: newsproducer-activemq-password 
+type: Opaque
+data:
+     ACTIVEMQ_USER_PASSWORD: YWRtaW4=
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: activemq-configmap
+data:
+  ACTIVEMQ_ADMIN_LOGIN: "admin"
+  ACTIVEMQ_CONFIG_MINMEMORY: "512"
+  ACTIVEMQ_CONFIG_MAXMEMORY: "1024"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: activemq-service
+  labels:
+    part-of: backend
+spec:
+  type: ClusterIP
+  ports:
+    - name : activemq-ui
+      port: 8161
+      targetPort: 8161
+    - name : activemq-in
+      port: 61613
+      targetPort: 61613  
+  selector:
+    app: be-activemq
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: activemq-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: activemq-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: be-activemq
+  template:
+    metadata:
+      name: activemq
+      labels:
+        app: be-activemq
+        part-of: backend
+        env: develop
+    spec:
+      volumes:
+        - name: activemq-pv-storage
+          persistentVolumeClaim:
+            claimName: activemq-claim
+      containers:
+        - name: activemq
+          image: erhancetin/activemq
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: activemq-configmap
+            - secretRef:
+                name: activemq-admin-password    
+          ports:
+            - containerPort: 8161
+            - containerPort: 61616
+            - containerPort: 61613
+          volumeMounts:
+            - name: activemq-pv-storage
+              mountPath: /mnt/volumes/log/activemq

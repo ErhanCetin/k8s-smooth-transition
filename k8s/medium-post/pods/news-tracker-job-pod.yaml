@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newsproducer-pod
+  labels:
+    app: be-producer
+    part-of: backend
+    env: prod
+spec:
+  containers:
+    - name: newsproducer
+      image: erhancetin/k8s-news-tracker-job
+      imagePullPolicy: Always
+      env:
+        - name: ACTIVEMQ_ADMIN_LOGIN
+          value: "admin"
+        - name: NEWSAPI-AUTHORIZATION
+          value: "db87162d00af4d1bb4c8031ad1cf22f5"
+        - name: ACTIVEMQ_HOST
+          value: "activemq"
+        - name: ACTIVEMQ_PORT
+          value: "61613"
+        - name: ACTIVEMQ_QUEUE_NAME
+          value: "news-queue"
+        - name: ACTIVEMQ_USER_LOGIN
+          value: "admin"
+        - name: ACTIVEMQ_USER_PASSWORD
+          value: "admin"
+        - name: ACTIVEMQ_ADMIN_PORT
+          value: "8161"
+        - name: WAIT_HOSTS
+          value:  "activemq:8161"
+        - name: WAIT_HOSTS_TIMEOUT
+          value: "300"
+        - name: WAIT_SLEEP_INTERVAL
+          value: "5"
+        - name: WAIT_HOST_CONNECT_TIMEOUT
+          value: "5"

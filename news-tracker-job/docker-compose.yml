@@ -1,0 +1,42 @@
+version: '3'
+services:
+  activemq:
+    image: erhancetin/activemq
+    restart: always
+    container_name: activemq
+    ports:
+      - 61613:61613
+      - 61616:61616
+      - 8161:8161
+    volumes:
+      - ./volumes/log/activemq:/var/log/activemq
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_CONFIG_MINMEMORY=512
+      - ACTIVEMQ_CONFIG_MAXMEMORY=1024
+    networks:
+      - news-tracker-network
+  newsproducer:
+    image: erhancetin/k8s-news-tracker-job
+    restart: on-failure
+    container_name: newsproducer
+    environment:
+     - NEWSAPI-AUTHORIZATION=db87162d00af4d1bb4c8031ad1cf22f5
+     - ACTIVEMQ_HOST=activemq
+     - ACTIVEMQ_PORT=61613
+     - ACTIVEMQ_QUEUE_NAME=news-queue
+     - ACTIVEMQ_USER_LOGIN=admin
+     - ACTIVEMQ_USER_PASSWORD=admin
+     - ACTIVEMQ_ADMIN_PORT=8161
+     - WAIT_HOSTS=activemq:8161
+     - WAIT_HOSTS_TIMEOUT=300
+     - WAIT_SLEEP_INTERVAL=5
+     - WAIT_HOST_CONNECT_TIMEOUT=5
+    depends_on :
+      - activemq
+    networks:
+      - news-tracker-network
+networks:
+  news-tracker-network:
+    driver: "bridge"

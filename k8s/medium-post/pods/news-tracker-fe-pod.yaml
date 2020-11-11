@@ -1,0 +1,54 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: fee-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: fee-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100M
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newstrackerfe-pod
+  labels:
+    app: fe-react
+    part-of: frontend
+    env: prod
+spec:
+  volumes:
+    - name: fee-pv-storage
+      persistentVolumeClaim:
+        claimName: fee-claim
+  containers:
+    - name: newstrackerfe
+      image: erhancetin/k8s-news-tracker-fe
+      imagePullPolicy: Always
+      env:
+        - name: CHOKIDAR_USEPOLLING
+          value: "true"
+        - name: REACT_APP_API_HOST_NAME
+          value: "localhost<change_me>"
+        - name: REACT_APP_API_HOST_PORT
+          value: "8085<change_me_in_service_yaml>"
+      ports:
+        - containerPort: 3000
+      volumeMounts:
+        - name: fee-pv-storage
+          mountPath: /mnt/fe
