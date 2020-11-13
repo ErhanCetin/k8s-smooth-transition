@@ -1,5 +1,7 @@
 # News Tracker Application 
 ---
+ ![fe-page-narrow](https://user-images.githubusercontent.com/10308201/99090312-bd0a6d80-25ce-11eb-9c95-a18f8f6093d2.png)"
+---
 - This project's been created to be used in k8s article to give details to readers. Basicly there are a couple of services which are aim to fetch tech news from [newsapi] to show in webapp.Please check the componenets section to get insight about project.All part of Kubernetes resources in this project are going to be used in the medium articles( I will provide the medium article links in here when they are ready) .
 - If you’re using this sample application, please ★Star this repository to show your interest!
 
@@ -195,10 +197,18 @@
        ```
         $ minikube service newsfe-service
       ```
+- check the browser , you should see the page below
+- ![fe-page-narrow](https://user-images.githubusercontent.com/10308201/99090312-bd0a6d80-25ce-11eb-9c95-a18f8f6093d2.png)
 ---
 ### License : MIT
 ---
+---
+#### Contact : [![Linkedin](https://i.stack.imgur.com/gVE0j.png) erhancetin](https://www.linkedin.com/in/erhancetin/)
+&nbsp;
+
 [//]:# (Reference Links)
 [newsapi]: <https://newsapi.org>
 [next.js]: <https://nextjs.org>
-[all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps>
+[all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps> 
+[fe-page-wide]: https://user-images.githubusercontent.com/10308201/99090289-b67bf600-25ce-11eb-8562-3f008a543ec3.png
+

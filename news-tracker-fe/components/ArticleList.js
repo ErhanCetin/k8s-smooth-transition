@@ -1,11 +1,13 @@
 import React from "react";
 import Article from "./Article";
+import CardNews from "./CardNews";
+
 
 function ArticleList(props) {
   return (
-    <div>
-     {props.news.map(c => <Article key={c.id} item={c} />)}
-    -- my place holder --
+    <div class="ui four cards">
+     {props.news.map(c => <CardNews item={c}/>)}
+     -- my place holder --
    </div>  
   );
 }

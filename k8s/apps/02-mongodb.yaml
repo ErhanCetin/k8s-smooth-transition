@@ -39,11 +39,11 @@ spec:
           image: mongo
           resources:
             limits:
-              memory: "800Mi"
-              cpu: "1"
-            requests:
-              memory: "500Mi"
+              memory: "300Mi"
               cpu: "0.5"
+            requests:
+              memory: "200Mi"
+              cpu: "0.2"
           imagePullPolicy: Always
           ports:
             - containerPort: 27017
