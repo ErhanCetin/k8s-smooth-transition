@@ -7,7 +7,6 @@ function ArticleList(props) {
   return (
     <div class="ui four cards">
      {props.news.map(c => <CardNews item={c}/>)}
-     -- my place holder --
    </div>  
   );
 }
