@@ -25,6 +25,7 @@ data:
   WAIT_SLEEP_INTERVAL: "5"
   WAIT_HOST_CONNECT_TIMEOUT: "5"
 ---
+
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -52,10 +53,10 @@ spec:
             resources:
               limits:
                 memory: "300Mi"
-                cpu: "1"
+                cpu: "0.4"
               requests:
                 memory: "200Mi"
-                cpu: "0.5"
+                cpu: "0.2"
             imagePullPolicy: Always
             envFrom:
               - configMapRef:

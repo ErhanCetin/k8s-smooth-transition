@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardGroup, Icon, Image ,Button, Grid, Segment,Item} from 'semantic-ui-react'
+import { Card, Icon, Image ,Item} from 'semantic-ui-react'
 
 const CardNews = ({ item }) => {
   return (
@@ -8,18 +8,13 @@ const CardNews = ({ item }) => {
     <Image src={item.urlToImage} wrapped ui={false} />
     <Card.Content>
       <Card.Header>{item.title}</Card.Header>
-      <Card.Meta>
-        <span className='date'>Joined in 2015</span>
-      </Card.Meta>
-      <Card.Description>
-      {item.description}
-      </Card.Description>
+      <Card.Meta><span className='date'><Icon name="calendar alternate icon"/>{item.publishedAt}</span></Card.Meta>
+      <Card.Description>{item.description}</Card.Description>
     </Card.Content>
     <Card.Content extra>
-      <a>
-        <Icon name='user' />
-        {item.source_name}
-      </a>
+     <span><a href={item.url} ><Icon name='list alternate outline' />Source : {item.source_name}</a></span>
+      <br/>
+      <span><Icon name='user circle icon' />Author: {item.author}</span>
     </Card.Content>
   </Card>  
   )

@@ -7,9 +7,9 @@ import CardNews from "./CardNews";
 
 function Article(props) {
     return (
-        <div >
+        <div>
             <CardNews item={props.item} />
-        </div >
+        </div>
     );
 }
 export default Article;
