@@ -14,7 +14,7 @@
 ---
 ##### 1. NewsTrackerProducer Service
 
-- It is implemented with Python to fetch the tech news from [newsapi] and write them down to activemq queue.
+- It is implemented with **Python** to fetch the tech news from [newsapi] and write them down to activemq queue.
 
 ##### 2. ActiveMQ Service
 
@@ -22,7 +22,7 @@
 
 ##### 3. NewsTrackerConsumer Service
 
-- It is implemented with golang to fetch the news from Activemq service and write them down to mongo db.
+- It is implemented with **golang** to fetch the news from Activemq service and write them down to mongo db.
    
 ##### 4. Mongodb Service
 
@@ -30,15 +30,15 @@
 
 ##### 5. Mongo-Express Service
 
-- It is used to check mongo db via user interface. 
+- It is used to check **Mongo DB** via user interface. 
    
 ##### 6. NewsTrackerApi Service 
 
-- It is implemented with Spring Boot and SpringData MongoTemplate . The service serves the **news** data. --> used by NewsTrackerFE Service  
+- It is implemented with **Spring Boot and SpringData MongoTemplate**. The service serves the **news** data. --> used by NewsTrackerFE Service  
    
 ##### 7. NewsTrackerFE Service 
 
-- It is implemented with [next.js]. This service presents all news list which is coming from NewsTrackerApi service to the end user.
+- It is implemented with **[next.js]**. This service presents all news list which is coming from NewsTrackerApi service to the end user.
  
 ### Steps between the services
  1. Fetching news from [newsapi] and write them to activemq. --> by NewsTrackerProducer Service  
@@ -211,4 +211,3 @@
 [next.js]: <https://nextjs.org>
 [all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps> 
 [fe-page-wide]: https://user-images.githubusercontent.com/10308201/99090289-b67bf600-25ce-11eb-8562-3f008a543ec3.png
-

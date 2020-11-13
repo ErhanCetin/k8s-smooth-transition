@@ -1,18 +1,12 @@
 #### News Consumer Service
-     - It is written by golang to fetch the news from activemq and write them down to mongo db.
+ - It is implemented with golang to fetch the news from activemq and write them down to Mongo db.
 
-#### Mongodb Service
-     - It is used by new consumer to put news in it.
-
-#### mongo-express 
-   - It is used to check mongo db table via user interface. 
-   - for local : http://localhost:8089/
-## to push docker image to docker hub 
-   - > docker build -t k8s-news-tracker-consumer .
-   - > docker images
-   - > docker tag 56c1dbad99a2 erhancetin/k8s-news-tracker-consumer:latest
-   - > docker push erhancetin/k8s-news-tracker-consumer:latest
+- For pushing the docker image to the docker hub 
+  > docker build -t k8s-news-tracker-consumer .
+  > docker images
+  > docker tag 56c1dbad99a2 erhancetin/k8s-news-tracker-consumer:latest
+  > docker push erhancetin/k8s-news-tracker-consumer:latest
 
 
-## to exec
-- > kubectl exec -it newsconsumer-pod-name  /bin/sh   
+- For exec
+  > kubectl exec -it newsconsumer-pod-name  /bin/sh   
