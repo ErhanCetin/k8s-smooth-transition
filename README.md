@@ -2,7 +2,7 @@
 ---
  ![fe-page-narrow](https://user-images.githubusercontent.com/10308201/99090312-bd0a6d80-25ce-11eb-9c95-a18f8f6093d2.png)"
 ---
-- This project's been created to be used in k8s article to give details to readers. Basicly there are a couple of services which are aim to fetch tech news from [newsapi] to show in webapp.Please check the componenets section to get insight about project.All part of Kubernetes resources in this project are going to be used in the medium articles( I will provide the medium article links in here when they are ready) .
+- This project's been created to be used in k8s articles, microservices as well in the feature, to give details to readers. I wanna a reader to make some practices with my articles. You can easily apply the YAML file after doing prerequisites following the below section to check the project quickly. Basically, there are a couple of services that aim to fetch tech news from [newsapi] to show in the web app. Please check the components section to get insight into the project.
 - If you’re using this sample application, please ★Star this repository to show your interest!
 
 ## Service Architecture
@@ -50,15 +50,24 @@
 ### Installation for running Kubernetes locally
 ---
 * **Prerequisites:** 
-   * git : https://git-scm.com/downloads
-   * docker: https://docs.docker.com/get-docker/
-   * kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl/
-   * minikube: https://kubernetes.io/docs/tasks/tools/install-minikube/ 
+   * Install git : https://git-scm.com/downloads
+   * Install docker: https://docs.docker.com/get-docker/
+   * Install kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl/
+   * Install minikube: https://kubernetes.io/docs/tasks/tools/install-minikube/ 
+   * An API Key of [newsapi] is used to fetch the news. It is used by the News Producer Service. I already put my API key to the configuration. But this key is limited to 100 requests per day. I recommend you to get your own API key from [newsapi-free] : 
+     * Select the "Developer" option , After registration , Go your account and copy API Key.
+        ![newspi org-account](https://user-images.githubusercontent.com/10308201/99146187-1e394c00-2676-11eb-82e8-3320923c62a6.png)
+     * Change YAML file ( I hope, you already clone the project to your local.)
+       * Find : /k8s-smooth-transition/k8s/apps/04-newsproducer.yaml and change NEWSAPI_AUTHORIZATION with your API Key.
+         * ![newsapi-org-config-key](https://user-images.githubusercontent.com/10308201/99146276-dff05c80-2676-11eb-9dac-ebd062438a82.png) 
    * Don't forget 
      * Check the version compatibility of docker,kubectl and minikube
-     * Increase **resources** of docker in your local.
+     * Increase **resources** of docker in your local (Recommended resources : 4CPU & 5GB) .
      
-
+* **The whole project was tested in a local env with :**
+    *   Kubernetes v1.18.3
+    *   minikube v1.12.1 on Darwin 10.15.4
+    *   Docker 19.03.2 ( Resources 4CPU & 5GB)
 * **Execute commands to verify installation :** 
     ```sh
       $ docker --version
@@ -208,6 +217,8 @@
 
 [//]:# (Reference Links)
 [newsapi]: <https://newsapi.org>
+[newsapi-free]: <https://newsapi.org/pricing>
 [next.js]: <https://nextjs.org>
 [all-news-tracker-services]: <https://github.com/ErhanCetin/k8s-smooth-transition/tree/develop/k8s/apps> 
 [fe-page-wide]: https://user-images.githubusercontent.com/10308201/99090289-b67bf600-25ce-11eb-8562-3f008a543ec3.png
+
