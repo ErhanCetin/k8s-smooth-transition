@@ -2,7 +2,7 @@
 ---
  ![fe-page-narrow](https://user-images.githubusercontent.com/10308201/99090312-bd0a6d80-25ce-11eb-9c95-a18f8f6093d2.png)"
 ---
-- This project's been created to be used in k8s articles, microservices as well in the feature, to give details to readers. I wanna a reader to make some practices with my articles. You can easily apply the YAML file after doing prerequisites following the below section to check the project quickly. Basically, there are a couple of services that aim to fetch tech news from [newsapi] to show in the web app. Please check the components section to get insight into the project.
+- This project's been created to be used in k8s articles, microservices as well in the feature, to give details to readers. I want to a reader to make some practices with my articles. You can easily apply the YAML file after doing prerequisites following the below section to check the project quickly. Basically, there are a couple of services that aim to fetch tech news from [newsapi] to show in the web app. Please check the components section to get insight into the project.
 - If you’re using this sample application, please ★Star this repository to show your interest!
 
 ## Service Architecture
@@ -18,7 +18,7 @@
 
 ##### 2. ActiveMQ Service
 
-- This service is used to persist the data which coming from [newsapi] in the queue. --> used by NewsTrackerProducer and NewsTrackerConsumer Services.
+- This service is used to persist the data coming from [newsapi] in the queue. --> used by NewsTrackerProducer and NewsTrackerConsumer Services.
 
 ##### 3. NewsTrackerConsumer Service
 
@@ -57,7 +57,7 @@
    * An API Key of [newsapi] is used to fetch the news. It is used by the News Producer Service. I already put my API key to the configuration. But this key is limited to 100 requests per day. I recommend you to get your own API key from [newsapi-free] : 
      * Select the "Developer" option , After registration , Go your account and copy API Key.
         ![newspi org-account](https://user-images.githubusercontent.com/10308201/99146187-1e394c00-2676-11eb-82e8-3320923c62a6.png)
-     * Change YAML file ( I hope, you already clone the project to your local.)
+     * Change YAML file, I hope you already clone the project to your local.
        * Find : /k8s-smooth-transition/k8s/apps/04-newsproducer.yaml and change NEWSAPI_AUTHORIZATION with your API Key.
          * ![newsapi-org-config-key](https://user-images.githubusercontent.com/10308201/99146276-dff05c80-2676-11eb-9dac-ebd062438a82.png) 
    * Don't forget 
